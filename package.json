@@ -5,24 +5,28 @@
   "repository": "https://github.com/irislib/iris-electron",
   "author": "Martti Malmi <sirius@iki.fi>",
   "license": "MIT",
+  "description": "Social networking freedom",
   "dependencies": {
-    "electron": "^6.0.10",
-    "electron-builder": "^21.2.0",
     "gun": "^0.2019.915"
   },
+  "devDependencies": {
+    "electron": "^6.0.10",
+    "electron-builder": "^21.2.0"
+  },
   "build": {
-    "appId": "fi.identi",
+    "appId": "to.iris",
     "mac": {
       "category": "public.app-category.social-networking"
     },
-    "directories": {
-      "output": "electron"
+    "publish": {
+      "provider": "github"
     }
   },
   "scripts": {
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "git submodule init && electron-builder install-app-deps",
     "start": "DEV=true electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "build": "electron-builder",
+    "release": "electron-builder"
   }
 }

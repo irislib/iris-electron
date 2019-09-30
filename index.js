@@ -4,7 +4,8 @@ const url = require("url");
 
 const Gun = require("gun");
 const server = require('http').createServer(Gun.serve(__dirname + "iris-angular/dist"));
-const gun = Gun({web: server.listen(8765), multicast: { port: 8765 } });
+const userDataPath = app.getPath('userData');
+const gun = Gun({file: userDataPath + '/radata', web: server.listen(8765), multicast: { port: 8765 } });
 console.log('Relay peer started on port ' + 8765 + ' with /gun');
 
 let win;
@@ -50,4 +51,8 @@ app.on("activate", () => {
   if (win === null) {
     createWindow();
   }
+});
+
+app.setLoginItemSettings({
+  openAtLogin: true
 });
