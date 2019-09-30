@@ -10,7 +10,17 @@
     "electron-builder": "^21.2.0",
     "gun": "^0.2019.915"
   },
+  "build": {
+    "appId": "fi.identi",
+    "mac": {
+      "category": "public.app-category.social-networking"
+    },
+    "directories": {
+      "output": "electron"
+    }
+  },
   "scripts": {
+    "postinstall": "electron-builder install-app-deps",
     "start": "DEV=true electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"

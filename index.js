@@ -3,7 +3,6 @@ const path = require("path");
 const url = require("url");
 
 const Gun = require("gun");
-require("gun/lib/multicast");
 const server = require('http').createServer(Gun.serve(__dirname + "iris-angular/dist"));
 const gun = Gun({web: server.listen(8765), multicast: { port: 8765 } });
 console.log('Relay peer started on port ' + 8765 + ' with /gun');
@@ -14,7 +13,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 800,
     height: 600,
-    webPreferences: {nodeIntegration: true},
+    webPreferences: {nodeIntegration: false},
     icon: path.join(__dirname, 'iris-angular/dist/assets/images/icon128.png')
   });
 
