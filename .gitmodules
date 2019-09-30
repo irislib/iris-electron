@@ -1,0 +1,3 @@
+[submodule "iris-angular"]
+	path = iris-angular
+	url = git@github.com:irislib/iris-angular.git
