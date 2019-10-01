@@ -7,10 +7,13 @@ const url = require("url");
 const Gun = require("gun");
 const server = require('http').createServer(Gun.serve(__dirname + "iris-angular/dist"));
 const userDataPath = app.getPath('userData');
-const gun = Gun({file: userDataPath + '/radata', web: server.listen(8765), multicast: { port: 8765 } });
 console.log('Relay peer started on port ' + 8765 + ' with /gun');
 
-let win;
+let win, gun;
+
+function createGun() {
+  gun = Gun({file: userDataPath + '/radata', web: server.listen(8765), multicast: { port: 8765 } });
+}
 
 function createWindow() {
   win = new BrowserWindow({
@@ -40,6 +43,7 @@ function createWindow() {
 }
 
 app.on("ready", createWindow);
+app.on("ready", createGun);
 
 // on macOS, closing the window doesn't quit the app
 app.on("window-all-closed", () => {
