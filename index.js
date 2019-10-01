@@ -1,4 +1,6 @@
 const { app, BrowserWindow } = require("electron");
+const { autoUpdater } = require("electron-updater")
+
 const path = require("path");
 const url = require("url");
 
@@ -56,3 +58,5 @@ app.on("activate", () => {
 app.setLoginItemSettings({
   openAtLogin: true
 });
+
+autoUpdater.checkForUpdatesAndNotify();
