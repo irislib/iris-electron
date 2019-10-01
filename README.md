@@ -4,7 +4,7 @@
 
 ## develop
 ```
-git submodule init
+git submodule update --init
 yarn
 yarn start
 ```
