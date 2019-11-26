@@ -1,6 +1,8 @@
 # iris-electron
 
-[Iris-angular](https://github.com/irislib/iris-angular) Electron app
+[Iris-angular](https://github.com/irislib/iris-angular) Electron app.
+
+[Download](https://github.com/irislib/iris-electron/releases)
 
 ## develop
 ```
