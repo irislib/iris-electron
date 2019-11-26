@@ -1,13 +1,13 @@
 {
   "name": "iris-electron",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "repository": "https://github.com/irislib/iris-electron",
   "author": "Martti Malmi <sirius@iki.fi>",
   "license": "MIT",
   "description": "Social networking freedom",
   "dependencies": {
-    "gun": "^0.2019.915",
+    "gun": "^0.2019.930",
     "electron-updater": "^4.1.2"
   },
   "devDependencies": {

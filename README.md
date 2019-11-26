@@ -21,7 +21,7 @@ Disable "afterSign" script in package.json if you're building for Mac and don't 
 
 Local platform:
 ```
-yarn dist
+yarn build
 ```
 
 Docker:
