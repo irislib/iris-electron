@@ -42,6 +42,11 @@ function createWindow() {
   win.on("closed", () => {
     win = null;
   });
+
+  const loginItemSettings = app.getLoginItemSettings();
+  if (loginItemSettings.wasOpenedAtLogin) {
+    win.minimize();
+  }
 }
 
 app.on("ready", createWindow);
