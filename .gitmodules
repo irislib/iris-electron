@@ -1,3 +1,6 @@
 [submodule "iris-angular"]
 	path = iris-angular
 	url = git@github.com:irislib/iris-angular.git
+[submodule "iris-messenger"]
+	path = iris-messenger
+	url = git@github.com:irislib/iris-messenger.git

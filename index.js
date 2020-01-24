@@ -5,7 +5,7 @@ const path = require("path");
 const url = require("url");
 
 const Gun = require("gun");
-const server = require('http').createServer(Gun.serve(__dirname + "iris-angular/dist"));
+const server = require('http').createServer(Gun.serve(__dirname + "iris-messenger/src"));
 const userDataPath = app.getPath('userData');
 console.log('Relay peer started on port ' + 8765 + ' with /gun');
 
@@ -20,13 +20,15 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {nodeIntegration: false},
-    icon: path.join(__dirname, 'iris-angular/dist/assets/images/icon128.png')
+    icon: path.join(__dirname, 'iris-messenger/src/icon128.png')
   });
+
+  win.removeMenu();
 
   // load the dist folder from Angular
   win.loadURL(
     url.format({
-      pathname: path.join(__dirname, `iris-angular/dist/index.html`),
+      pathname: path.join(__dirname, `iris-messenger/src/index.html`),
       protocol: "file:",
       slashes: true
     })

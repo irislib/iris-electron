@@ -1,6 +1,6 @@
 # iris-electron
 
-[Iris-angular](https://github.com/irislib/iris-angular) Electron app.
+[Iris-messenger](https://github.com/irislib/iris-messenger) Electron app.
 
 [Download](https://github.com/irislib/iris-electron/releases)
 
