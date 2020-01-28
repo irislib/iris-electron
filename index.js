@@ -12,7 +12,7 @@ console.log('Relay peer started on port ' + 8765 + ' with /gun');
 let win, gun;
 
 function createGun() {
-  gun = Gun({file: userDataPath + '/radata', web: server.listen(8765), multicast: { port: 8765 } });
+  gun = Gun({file: userDataPath + '/radata', web: server.listen(8767), multicast: { port: 8765 } });
 }
 
 function createWindow() {
