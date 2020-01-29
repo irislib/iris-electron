@@ -9,7 +9,7 @@ const server = require('http').createServer(Gun.serve(__dirname + "iris-messenge
 const userDataPath = app.getPath('userData');
 console.log('Relay peer started on port ' + 8765 + ' with /gun');
 
-let win, gun;
+let win, gun, isQuiting;
 
 function createGun() {
   gun = Gun({file: userDataPath + '/radata', web: server.listen(8767), multicast: { port: 8765 } });
@@ -43,6 +43,14 @@ function createWindow() {
     win = null;
   });
 
+  win.on('close', (event) => {
+    if (!isQuiting) {
+      event.preventDefault();
+      win.minimize();
+    }
+    return false;
+  });
+
   const loginItemSettings = app.getLoginItemSettings();
   if (loginItemSettings.wasOpenedAtLogin) {
     win.minimize();
@@ -51,6 +59,9 @@ function createWindow() {
 
 app.on("ready", createWindow);
 app.on("ready", createGun);
+app.on('before-quit', function () {
+  isQuiting = true;
+});
 
 // on macOS, closing the window doesn't quit the app
 app.on("window-all-closed", () => {
