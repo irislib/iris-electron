@@ -47,8 +47,8 @@ function createWindow() {
     if (!isQuiting) {
       event.preventDefault();
       win.minimize();
+      event.returnValue = false;
     }
-    return false;
   });
 
   const loginItemSettings = app.getLoginItemSettings();
