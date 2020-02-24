@@ -5,7 +5,7 @@ const path = require("path");
 const url = require("url");
 
 const Gun = require("gun");
-const server = require('http').createServer(Gun.serve(__dirname + "iris-messenger/src"));
+const server = require('http').createServer(Gun.serve);
 const userDataPath = app.getPath('userData');
 console.log('Relay peer started on port ' + 8765 + ' with /gun');
 
