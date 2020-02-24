@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, shell } = require("electron");
 const { autoUpdater } = require("electron-updater")
 
 const path = require("path");
@@ -55,6 +55,11 @@ function createWindow() {
   if (loginItemSettings.wasOpenedAtLogin) {
     win.minimize();
   }
+
+  win.webContents.on('new-window', function(e, url) {
+    e.preventDefault();
+    shell.openExternal(url);
+  });
 }
 
 app.on("ready", createWindow);
