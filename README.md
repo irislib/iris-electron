@@ -4,6 +4,8 @@
 
 [Download](https://github.com/irislib/iris-electron/releases)
 
+![Screenshot](https://github.com/irislib/iris-messenger/raw/master/screenshot.png)
+
 ## develop
 ```
 git submodule update --init
