@@ -7,8 +7,8 @@
   "license": "MIT",
   "description": "Social networking freedom",
   "dependencies": {
-    "gun": "^0.2019.930",
-    "electron-updater": "^4.1.2"
+    "electron-updater": "^4.1.2",
+    "gun": "^0.2020.301"
   },
   "devDependencies": {
     "dotenv": "^8.1.0",
