@@ -7,7 +7,7 @@ const url = require("url");
 const Gun = require("gun");
 const server = require('http').createServer(Gun.serve);
 const userDataPath = app.getPath('userData');
-console.log('Relay peer started on port ' + 8765 + ' with /gun');
+console.log('Relay peer started on port ' + 8767 + ' with /gun');
 
 let win, gun, isQuiting;
 
