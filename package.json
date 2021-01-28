@@ -8,7 +8,7 @@
   "description": "Social networking freedom",
   "dependencies": {
     "electron-updater": "^4.2.5",
-    "gun": "^0.2020.301"
+    "gun": "^0.2020.520"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
