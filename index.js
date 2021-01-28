@@ -5,16 +5,18 @@ const path = require("path");
 const url = require("url");
 
 const Gun = require("gun");
+
 const publicServer = require('http').createServer(Gun.serve);
 const localServer = require('http').createServer(Gun.serve); // TODO: make it accept connections from localhost only
 const userDataPath = app.getPath('userData');
-console.log('Relay peer started on port ' + 8767 + ' with /gun');
+const icon = path.join(__dirname, 'iris-messenger/src/img/icon128.png');
 
 let win, publicState, localState, isQuiting, settings = { minimizeOnClose: true, openAtLogin: !process.env.DEV };
 let tray = null;
 
 function createGun() {
 	publicState = Gun({file: userDataPath + '/radata', web: publicServer.listen(8767), multicast: { port: 8765 } });
+	console.log('Relay peer started on port ' + 8767 + ' with /gun');
 	localState = Gun({file: userDataPath + '/localState', web: localServer.listen(8768), multicast: false, peers: [] }).get('state');
 	localState.get('settings').map().on((v, k) => settings[k] = v);
 	if (!process.env.DEV) {
@@ -25,8 +27,6 @@ function createGun() {
 		});
 	}
 }
-
-const icon = path.join(__dirname, 'iris-messenger/src/img/icon128.png');
 
 function createWindow() {
 	win = new BrowserWindow({
@@ -98,28 +98,42 @@ function createWindow() {
 	});
 }
 
-app.setLoginItemSettings({
-	openAtLogin: !process.env.DEV
-});
+const lock = app.requestSingleInstanceLock();
+if (!lock) {
+	console.log('Another instance of Iris is already running');
+	app.quit();
+} else {
+	app.setLoginItemSettings({
+		openAtLogin: !process.env.DEV
+	});
 
-app.on("ready", createWindow);
-app.on("ready", createGun);
-app.on('before-quit', function () {
-	isQuiting = true;
-});
+	app.on("ready", createWindow);
+	app.on("ready", createGun);
+	app.on('before-quit', function () {
+		isQuiting = true;
+	});
 
-// on macOS, closing the window doesn't quit the app
-app.on("window-all-closed", () => {
-	if (process.platform !== "darwin" || !settings.minimizeOnClose) {
-		app.quit();
-	}
-});
+	// on macOS, closing the window doesn't quit the app
+	app.on("window-all-closed", () => {
+		if (process.platform !== "darwin" || !settings.minimizeOnClose) {
+			app.quit();
+		}
+	});
 
-// initialize the app's main window
-app.on("activate", () => {
-	if (win === null) {
-		createWindow();
-	}
-});
+	// initialize the app's main window
+	app.on("activate", () => {
+		if (win === null) {
+			createWindow();
+		}
+	});
 
-autoUpdater.checkForUpdatesAndNotify();
+	app.on('second-instance', (event, commandLine, workingDirectory) => {
+		// Someone tried to run a second instance, we should focus our window.
+		if (win) {
+			if (win.isMinimized()) { win.restore(); }
+			win.focus();
+		}
+	});
+
+	autoUpdater.checkForUpdatesAndNotify();
+}
