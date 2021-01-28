@@ -16,36 +16,37 @@ function createGun() {
 	gun = Gun({file: userDataPath + '/radata', web: server.listen(8767), multicast: { port: 8765 } });
 }
 
+const icon = path.join(__dirname, 'iris-messenger/src/img/icon128.png');
+
 function createWindow() {
 	win = new BrowserWindow({
 		width: 1024,
 		height: 768,
 		webPreferences: {nodeIntegration: false},
-		icon: path.join(__dirname, 'iris-messenger/src/icon128.png')
+		icon
 	});
 
-	// If the platform is Windows use ... else use ... as icon
-	const iconName = process.platform === 'win32' ? 'icon.png' : 'icon.png';
-	const iconPath = path.join(__dirname, `./build/${iconName}`);
-	tray = new Tray(iconPath);
+  if (process.platform !== 'darwin') {
+    tray = new Tray(icon);
 
-	let trayMenu = [
-		{
-			label: 'Quit',
-			type: 'normal',
-			click: () => app.quit()
-		}
-	]
+  	let trayMenu = [
+  		{
+  			label: 'Quit',
+  			type: 'normal',
+  			click: () => app.quit()
+  		}
+  	]
 
-	// Left click on tray icon opens the app
-	if (process.platform === 'win32') {
-		tray.on('click', () => {
-			win.show();
-		});
-	}
-	// Set the Tray menu with the variable "trayMenu"
-	const menu = Menu.buildFromTemplate(trayMenu);
-	tray.setContextMenu(menu);
+  	// Left click on tray icon opens the app
+  	if (process.platform === 'win32') {
+  		tray.on('click', () => {
+  			win.show();
+  		});
+  	}
+  	// Set the Tray menu with the variable "trayMenu"
+  	const menu = Menu.buildFromTemplate(trayMenu);
+  	tray.setContextMenu(menu);
+  }
 
 	win.removeMenu();
 
