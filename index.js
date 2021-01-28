@@ -10,18 +10,20 @@ const localServer = require('http').createServer(Gun.serve); // TODO: make it ac
 const userDataPath = app.getPath('userData');
 console.log('Relay peer started on port ' + 8767 + ' with /gun');
 
-let win, publicState, localState, isQuiting, settings = { minimizeOnClose: true, openAtLogin: true };
+let win, publicState, localState, isQuiting, settings = { minimizeOnClose: true, openAtLogin: !process.env.DEV };
 let tray = null;
 
 function createGun() {
 	publicState = Gun({file: userDataPath + '/radata', web: publicServer.listen(8767), multicast: { port: 8765 } });
 	localState = Gun({file: userDataPath + '/localState', web: localServer.listen(8768), multicast: false, peers: [] }).get('state');
 	localState.get('settings').map().on((v, k) => settings[k] = v);
-	localState.get('settings').get('openAtLogin').on(openAtLogin => {
-		app.setLoginItemSettings({
-			openAtLogin
+	if (!process.env.DEV) {
+		localState.get('settings').get('openAtLogin').on(openAtLogin => {
+			app.setLoginItemSettings({
+				openAtLogin
+			});
 		});
-	});
+	}
 }
 
 const icon = path.join(__dirname, 'iris-messenger/src/img/icon128.png');
@@ -97,7 +99,7 @@ function createWindow() {
 }
 
 app.setLoginItemSettings({
-	openAtLogin: true
+	openAtLogin: !process.env.DEV
 });
 
 app.on("ready", createWindow);
