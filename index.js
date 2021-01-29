@@ -5,6 +5,7 @@ const path = require("path");
 const url = require("url");
 
 const Gun = require("gun");
+const publicIp = require('public-ip');
 
 const publicServer = require('http').createServer(Gun.serve);
 const localServer = require('http').createServer(Gun.serve); // TODO: make it accept connections from localhost only
@@ -26,6 +27,7 @@ function createGun() {
 			});
 		});
 	}
+	publicIp.v4().then(ip => localState.get('settings').get('publicIp').put(ip)); // TODO: make optional / on demand
 }
 
 function createWindow() {
