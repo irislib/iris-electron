@@ -37,7 +37,7 @@ function createGun() {
 					win.minimize();
 					break;
 				case 'maximize':
-					win.isMaximized() ? win.restore() : win.maximize();
+					win.isMaximized() ? win.unmaximize() : win.maximize();
 					break;
 				case 'close':
 					win.close();
