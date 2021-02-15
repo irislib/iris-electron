@@ -3,6 +3,7 @@ const { autoUpdater } = require("electron-updater")
 
 const path = require("path");
 const url = require("url");
+const os = require('os');
 
 const Gun = require("gun");
 const publicIp = require('public-ip');
@@ -28,6 +29,21 @@ function createGun() {
 		});
 	}
 	publicIp.v4().then(ip => localState.get('settings').get('publicIp').put(ip)); // TODO: make optional / on demand
+	localState.get('platform').put(os.platform());
+	localState.get('cmd').on(cmd => {
+		if (win && cmd.name && cmd.time && (new Date() - new Date(cmd.time) < 1000)) {
+			switch (cmd.name) {
+				case 'minimize':
+					win.minimize();
+					break;
+				case 'maximize':
+					win.isMaximized() ? win.unmaximize() : win.maximize();
+					break;
+				case 'close':
+					win.close();
+			}
+		}
+	});
 }
 
 function createWindow() {
@@ -35,7 +51,10 @@ function createWindow() {
 		width: 1024,
 		height: 768,
 		webPreferences: {nodeIntegration: false},
-		icon
+		icon,
+		titleBarStyle: 'hiddenInset',
+		transparent: true,
+		frame: false
 	});
 
   if (process.platform !== 'darwin') {
