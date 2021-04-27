@@ -9,6 +9,7 @@
   "dependencies": {
     "electron-updater": "^4.3.5",
     "gun": "^0.2020.520",
+    "nat-pmp": "^1.0.0",
     "public-ip": "^4.0.3"
   },
   "devDependencies": {

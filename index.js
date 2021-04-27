@@ -5,8 +5,17 @@ const path = require("path");
 const url = require("url");
 const os = require('os');
 
+const GUN_PORT = 8767;
+
 const Gun = require("gun");
 const publicIp = require('public-ip');
+
+const natpmp = require('nat-pmp');
+const natpmp_client = natpmp.connect('10.0.1.1');
+natpmp_client.portMapping({ private: GUN_PORT, public: GUN_PORT, ttl: 3600 }, function (err, info) {
+  if (err) console.error(err);
+  console.log(info);
+});
 
 const publicServer = require('http').createServer(Gun.serve);
 const localServer = require('http').createServer(Gun.serve); // TODO: make it accept connections from localhost only
@@ -17,8 +26,8 @@ let win, publicState, localState, isQuiting, settings = { minimizeOnClose: true,
 let tray = null;
 
 function createGun() {
-	publicState = Gun({file: userDataPath + '/radata', web: publicServer.listen(8767), multicast: { port: 8765 } });
-	console.log('Relay peer started on port ' + 8767 + ' with /gun');
+	publicState = Gun({file: userDataPath + '/radata', web: publicServer.listen(GUN_PORT), multicast: { port: 8765 } });
+	console.log('Relay peer started on port ' + GUN_PORT + ' with /gun');
 	localState = Gun({file: userDataPath + '/localState', web: localServer.listen(8768), multicast: false, peers: [] }).get('state');
 	localState.get('settings').map().on((v, k) => settings[k] = v);
 	if (!process.env.DEV) {
