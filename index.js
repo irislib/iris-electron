@@ -18,7 +18,7 @@ natpmp_client.portMapping({ private: GUN_PORT, public: GUN_PORT, ttl: 3600 }, fu
 });
 
 const publicServer = require('http').createServer(Gun.serve);
-const localServer = require('http').createServer(Gun.serve); // TODO: make it accept connections from localhost only
+const localServer = require('http').createServer(Gun.serve);
 const userDataPath = app.getPath('userData');
 const icon = path.join(__dirname, 'iris-messenger/src/img/icon128.png');
 
@@ -28,7 +28,7 @@ let tray = null;
 function createGun() {
 	publicState = Gun({file: userDataPath + '/radata', web: publicServer.listen(GUN_PORT), multicast: { port: 8765 } });
 	console.log('Relay peer started on port ' + GUN_PORT + ' with /gun');
-	localState = Gun({file: userDataPath + '/localState', web: localServer.listen(8768), multicast: false, peers: [] }).get('state');
+	localState = Gun({file: userDataPath + '/localState', web: localServer.listen(8768, '127.0.0.1'), multicast: false, peers: [] }).get('state'); // IMPORTANT: only listen on 127.0.0.1
 	localState.get('settings').map().on((v, k) => settings[k] = v);
 	if (!process.env.DEV) {
 		localState.get('settings').get('openAtLogin').on(openAtLogin => {
