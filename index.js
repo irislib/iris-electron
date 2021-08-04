@@ -1,4 +1,4 @@
-const { app, BrowserWindow, shell, Tray, Menu } = require("electron");
+const { app, BrowserWindow, shell, Tray, Menu, protocol } = require("electron");
 const { autoUpdater } = require("electron-updater")
 
 const path = require("path");
@@ -93,7 +93,7 @@ function createWindow() {
 	// load the application source
 	win.loadURL(
 		url.format({
-			pathname: path.join(__dirname, `iris-messenger/dist/index.html`),
+			pathname: "index.html",
 			protocol: "file:",
 			slashes: true
 		})
@@ -128,6 +128,15 @@ function createWindow() {
 	});
 }
 
+function interceptFilePaths() {
+	protocol.interceptFileProtocol('file', (request, callback) => {
+    const url = request.url.substr(7)    /* all urls start with 'file://' */
+    callback({ path: path.normalize(`${__dirname}/iris-messenger/dist${url}`)})
+  }, (err) => {
+    if (err) console.error('Failed to register protocol')
+  })
+}
+
 const lock = app.requestSingleInstanceLock();
 if (!lock) {
 	console.log('Another instance of Iris is already running');
@@ -137,6 +146,7 @@ if (!lock) {
 		openAtLogin: !process.env.DEV
 	});
 
+	app.on("ready", interceptFilePaths);
 	app.on("ready", createWindow);
 	app.on("ready", createGun);
 	app.on('before-quit', function () {
