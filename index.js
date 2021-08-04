@@ -20,7 +20,7 @@ natpmp_client.portMapping({ private: GUN_PORT, public: GUN_PORT, ttl: 3600 }, fu
 const publicServer = require('http').createServer(Gun.serve);
 const localServer = require('http').createServer(Gun.serve);
 const userDataPath = app.getPath('userData');
-const icon = path.join(__dirname, 'iris-messenger/src/img/icon128.png');
+const icon = path.join(__dirname, 'iris-messenger/dist/assets/img/icon128.png');
 
 let win, publicState, localState, isQuiting, settings = { minimizeOnClose: true, openAtLogin: !process.env.DEV };
 let tray = null;
@@ -93,7 +93,7 @@ function createWindow() {
 	// load the application source
 	win.loadURL(
 		url.format({
-			pathname: path.join(__dirname, `iris-messenger/src/index.html`),
+			pathname: path.join(__dirname, `iris-messenger/dist/index.html`),
 			protocol: "file:",
 			slashes: true
 		})
