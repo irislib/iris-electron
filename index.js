@@ -131,7 +131,7 @@ function createWindow() {
 function interceptFilePaths() {
 	protocol.interceptFileProtocol('file', (request, callback) => {
     const url = request.url.substr(7)    /* all urls start with 'file://' */
-    callback({ path: path.normalize(`${__dirname}/iris-messenger/build{url}`)})
+    callback({ path: path.normalize(`${__dirname}/iris-messenger/build${url}`)})
   }, (err) => {
     if (err) console.error('Failed to register protocol')
   })
