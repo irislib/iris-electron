@@ -9,6 +9,7 @@
 ## develop
 ```
 git submodule update --init
+cd iris-messenger;yarn;yarn build;cd ..
 yarn
 yarn start
 ```
