@@ -9,19 +9,19 @@
   "dependencies": {
     "electron-updater": "^4.3.9",
     "gun": "^0.2020.1232",
-    "nat-pmp": "^1.0.0",
     "public-ip": "^4.0.4"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
-    "electron": "^13.1.8",
+    "electron": "^13.1.9",
     "electron-builder": "^22.11.7",
-    "electron-notarize": "^1.0.1"
+    "electron-notarize": "^1.1.0"
   },
   "build": {
     "productName": "Iris",
     "appId": "to.iris.electron",
     "afterSign": "scripts/notarize.js",
+    "files": "!.env",
     "mac": {
       "category": "public.app-category.social-networking"
     },
@@ -41,7 +41,7 @@
     }
   },
   "scripts": {
-    "postinstall": "git submodule init && electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps",
     "start": "DEV=true electron .",
     "pack": "electron-builder --dir",
     "build": "electron-builder",

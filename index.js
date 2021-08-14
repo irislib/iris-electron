@@ -10,13 +10,6 @@ const GUN_PORT = 8767;
 const Gun = require("gun");
 const publicIp = require('public-ip');
 
-const natpmp = require('nat-pmp');
-const natpmp_client = natpmp.connect('10.0.1.1');
-natpmp_client.portMapping({ private: GUN_PORT, public: GUN_PORT, ttl: 3600 }, function (err, info) {
-  if (err) console.error(err);
-  console.log(info);
-});
-
 const publicServer = require('http').createServer(Gun.serve);
 const localServer = require('http').createServer(Gun.serve);
 const userDataPath = app.getPath('userData');
