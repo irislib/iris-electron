@@ -20,7 +20,7 @@ natpmp_client.portMapping({ private: GUN_PORT, public: GUN_PORT, ttl: 3600 }, fu
 const publicServer = require('http').createServer(Gun.serve);
 const localServer = require('http').createServer(Gun.serve);
 const userDataPath = app.getPath('userData');
-const icon = path.join(__dirname, 'iris-messenger/dist/assets/img/icon128.png');
+const icon = path.join(__dirname, 'iris-messenger/build/assets/img/icon128.png');
 
 let win, publicState, localState, isQuiting, settings = { minimizeOnClose: true, openAtLogin: !process.env.DEV };
 let tray = null;
@@ -131,7 +131,7 @@ function createWindow() {
 function interceptFilePaths() {
 	protocol.interceptFileProtocol('file', (request, callback) => {
     const url = request.url.substr(7)    /* all urls start with 'file://' */
-    callback({ path: path.normalize(`${__dirname}/iris-messenger/dist${url}`)})
+    callback({ path: path.normalize(`${__dirname}/iris-messenger/build{url}`)})
   }, (err) => {
     if (err) console.error('Failed to register protocol')
   })
