@@ -4,6 +4,7 @@ const { autoUpdater } = require("electron-updater")
 const path = require("path");
 const url = require("url");
 const os = require('os');
+const bonjour = require('bonjour')();
 
 const GUN_PORT = 8767;
 
@@ -17,6 +18,15 @@ const icon = path.join(__dirname, 'iris-messenger/build/assets/img/icon128.png')
 
 let win, publicState, localState, isQuiting, settings = { minimizeOnClose: true, openAtLogin: !process.env.DEV };
 let tray = null;
+
+const bonjourName = `${os.hostname()} Iris`;
+console.log('our bonjourName', bonjourName);
+const bonjourPublish = txt => bonjour.publish({
+	name: bonjourName,
+	type: 'iris',
+	port: GUN_PORT,
+	txt
+});
 
 function createGun() {
 	publicState = Gun({file: userDataPath + '/radata', web: publicServer.listen(GUN_PORT), multicast: { port: 8765 } });
@@ -44,6 +54,29 @@ function createGun() {
 				case 'close':
 					win.close();
 			}
+		}
+	});
+	localState.get('bonjour').put(null);
+	const browser = bonjour.find({type:'iris'});
+	console.log('bonjour listening');
+	browser.on("up", s => {
+		console.log('service up', s);
+		console.log('services', JSON.stringify(browser.services));
+		localState.get('bonjour').put(JSON.stringify(browser.services));
+	});
+	browser.on("down", s => {
+		console.log('service down', s);
+		localState.get('bonjour').put(null);
+	});
+	let user;
+	let service = bonjourPublish();
+	localState.get('user').on(v => {
+		if (v !== user) {
+			user = v;
+			console.log('updating username to bonjour', user);
+			service.stop();
+			service.txt = user ? {user} : {};
+			service.start();
 		}
 	});
 }
@@ -86,7 +119,7 @@ function createWindow() {
 	// load the application source
 	win.loadURL(
 		url.format({
-			pathname: "index.html",
+			pathname: "/",
 			protocol: "file:",
 			slashes: true
 		})
@@ -123,7 +156,10 @@ function createWindow() {
 
 function interceptFilePaths() {
 	protocol.interceptFileProtocol('file', (request, callback) => {
-    const url = request.url.substr(7)    /* all urls start with 'file://' */
+    let url = request.url.substr(7)    /* all urls start with 'file://' */
+		if (url.length <= 1) {
+			url = '/index.html';
+		}
     callback({ path: path.normalize(`${__dirname}/iris-messenger/build${url}`)})
   }, (err) => {
     if (err) console.error('Failed to register protocol')
@@ -144,6 +180,8 @@ if (!lock) {
 	app.on("ready", createGun);
 	app.on('before-quit', function () {
 		isQuiting = true;
+		bonjour.unpublishAll();
+		bonjour.destroy();
 	});
 
 	// on macOS, closing the window doesn't quit the app
