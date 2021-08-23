@@ -652,6 +652,11 @@ debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2:
   dependencies:
     ms "2.1.2"
 
+debug@~0.7.0:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-0.7.4.tgz#06e1ea8082c2cb14e39806e22e2f6f757f92af39"
+  integrity sha1-BuHqgILCyxTjmAbiLi9vdX+Srzk=
+
 decompress-response@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/decompress-response/-/decompress-response-3.3.0.tgz#80a4dd323748384bfa248083622aedec982adff3"
@@ -1443,6 +1448,13 @@ multicast-dns@^6.0.1:
   dependencies:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
+
+nat-pmp@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/nat-pmp/-/nat-pmp-1.0.0.tgz#d5f3fb1dff52d9e20d16ad2aa1c41a54296a8c4a"
+  integrity sha1-1fP7Hf9S2eINFq0qocQaVClqjEo=
+  dependencies:
+    debug "~0.7.0"
 
 node-addon-api@^1.6.3:
   version "1.7.2"

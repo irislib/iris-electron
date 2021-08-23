@@ -19,6 +19,13 @@ const icon = path.join(__dirname, 'iris-messenger/build/assets/img/icon128.png')
 let win, publicState, localState, isQuiting, settings = { minimizeOnClose: true, openAtLogin: !process.env.DEV };
 let tray = null;
 
+const natpmp = require('nat-pmp');
+const natpmp_client = natpmp.connect('10.0.1.1');
+natpmp_client.portMapping({ private: GUN_PORT, public: GUN_PORT, ttl: 3600 }, function (err, info) {
+  if (err) console.error(err);
+  console.log(info);
+});
+
 const bonjourName = `${os.hostname()} Iris`;
 console.log('our bonjourName', bonjourName);
 const bonjourPublish = txt => bonjour.publish({
@@ -60,12 +67,9 @@ function createGun() {
 	const browser = bonjour.find({type:'iris'});
 	console.log('bonjour listening');
 	browser.on("up", s => {
-		console.log('service up', s);
-		console.log('services', JSON.stringify(browser.services));
 		localState.get('bonjour').put(JSON.stringify(browser.services));
 	});
 	browser.on("down", s => {
-		console.log('service down', s);
 		localState.get('bonjour').put(null);
 	});
 	let user;
