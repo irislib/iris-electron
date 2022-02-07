@@ -4,7 +4,7 @@
 
 [Download](https://github.com/irislib/iris-electron/releases)
 
-![Screenshot](https://github.com/irislib/iris-messenger/raw/master/src/img/screenshot.png)
+![Screenshot](https://github.com/irislib/iris-messenger/raw/master/src/assets/img/screenshot.png)
 
 ## develop
 ```
