@@ -16,7 +16,7 @@ const bonjour = require('bonjour')();
 const GUN_PORT = 8767;
 
 const Gun = require("gun");
-const publicIp = require('public-ip');
+const publicIp = import('public-ip');
 
 const publicServer = require('http').createServer(Gun.serve);
 const localServer = require('http').createServer(Gun.serve);
@@ -54,7 +54,7 @@ function createGun() {
 			});
 		});
 	}
-	publicIp.v4().then(ip => localState.get('settings').get('publicIp').put(ip)); // TODO: make optional / on demand
+	publicIp.then(r => r.publicIpv4()).then(ip => localState.get('settings').get('publicIp').put(ip)); // TODO: make optional / on demand
 	localState.get('platform').put(os.platform());
 	localState.get('cmd').on(cmd => {
 		if (win && cmd.name && cmd.time && (new Date() - new Date(cmd.time) < 1000)) {
