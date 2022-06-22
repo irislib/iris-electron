@@ -1,5 +1,12 @@
-const { app, BrowserWindow, shell, Tray, Menu, protocol } = require("electron");
+const { app, BrowserWindow, shell, Tray, Menu, protocol, dialog } = require("electron");
 const { autoUpdater } = require("electron-updater")
+
+if (!process.env.DEV) {
+	// Disable error dialogs by overriding
+	dialog.showErrorBox = function(title, content) {
+			console.log(`${title}\n${content}`);
+	};
+}
 
 const path = require("path");
 const url = require("url");
@@ -73,14 +80,11 @@ function createGun() {
 		localState.get('bonjour').put(null);
 	});
 	let user;
-	let service = bonjourPublish();
 	localState.get('user').on(v => {
 		if (v !== user) {
 			user = v;
 			console.log('updating username to bonjour', user);
-			service.stop();
-			service.txt = user ? {user} : {};
-			service.start();
+			bonjourPublish(user ? {user} : {});
 		}
 	});
 }
