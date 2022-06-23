@@ -1,6 +1,6 @@
 {
   "name": "iris-electron",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "main": "index.js",
   "repository": "https://github.com/irislib/iris-electron",
   "author": "Martti Malmi <sirius@iki.fi>",

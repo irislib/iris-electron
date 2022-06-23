@@ -35,13 +35,14 @@ natpmp_client.portMapping({ private: GUN_PORT, public: GUN_PORT, ttl: 3600 }, fu
 
 const bonjourName = `${os.hostname()} Iris`;
 console.log('our bonjourName', bonjourName);
-const bonjourPublish = txt => bonjour.publish({
-	name: bonjourName,
-	type: 'iris',
-	port: GUN_PORT,
-	txt
-});
-
+const bonjourPublish = txt => {
+		bonjour.publish({
+			name: bonjourName,
+			type: 'iris',
+			port: GUN_PORT,
+			txt
+		});
+}
 function createGun() {
 	publicState = Gun({file: userDataPath + '/radata', web: publicServer.listen(GUN_PORT), multicast: { port: 8765 } });
 	console.log('Relay peer started on port ' + GUN_PORT + ' with /gun');
@@ -82,9 +83,13 @@ function createGun() {
 	let user;
 	localState.get('user').on(v => {
 		if (v !== user) {
-			user = v;
+			user = v || '';
 			console.log('updating username to bonjour', user);
-			bonjourPublish(user ? {user} : {});
+			try {
+				bonjourPublish(user ? {user} : {});
+			} catch (e) {
+				console.error(e);
+			}
 		}
 	});
 }
@@ -165,7 +170,7 @@ function createWindow() {
 function interceptFilePaths() {
 	protocol.interceptFileProtocol('file', (request, callback) => {
     let url = request.url.substr(7)    /* all urls start with 'file://' */
-		if (url.length <= 1) {
+		if (url.length <= 3) {
 			url = '/index.html';
 		}
     callback({ path: path.normalize(`${__dirname}/iris-messenger/build${url}`)})
