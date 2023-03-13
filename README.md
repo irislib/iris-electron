@@ -1,3 +1,5 @@
+NOTE 13/03/2023: Moved to Tauri. Releases can be found in the [iris-messenger](https://github.com/irislib/iris-messenger) repository.
+
 NOTE 25/10/2022: It's been a while since the last release — if you just want to try Iris, installing the PWA from https://iris.to is more advisable.
 
 # iris-electron
